@@ -33,7 +33,7 @@ function renderMovies(movies) {
     </div>
         </div>`;
 
-    elList.append(fillModal(movie));
+    // elList.append(fillModal(movie));
   });
 
   elList.innerHTML = html;
