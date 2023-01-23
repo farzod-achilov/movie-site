@@ -46,21 +46,23 @@ h2 {
    height: 28px;
 }
 
-.visually-hidden {
-	position: absolute !important;
-	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-	clip: rect(1px, 1px, 1px, 1px);
-	padding:0 !important;
-	border:0 !important;
-	height: 1px !important; 
-	width: 1px !important; 
-	overflow: hidden;
+.my-modal {
+   position: fixed;
+   inset: 0;
+   background-color: rgba(0, 0, 0, 0.5);
+   align-items: center;
+   justify-content: center;
+   z-index: 222;
+   display: none;
 }
 
-.test-modal {
-   width: 100px;
+.show {
    display: flex;
-   justify-content: center;
-   align-items: center;
-   background: #000;
+}
+
+.my-modal-content {
+   max-width: 600px;
+   padding: 30px;
+   background-color: #fff;
+   border-radius: 10px;
 }

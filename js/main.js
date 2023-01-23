@@ -29,11 +29,11 @@ function renderMovies(movies) {
     html += `<div class="cinema"><img class="cinema__img" width="50" src="${movie.Poster}" alt="${movie.Title}"/>
     <div class="d-flex align-items-center justify-content-between">
     <h2>${movie.Title}-${movie.Year} </h2>
-    <button type="button" data-movie-modal-open class="btn cinema__btn"><img class="cinema__btn-img" src="./img/more.svg" alt="more"></button>
+    <button type="button" data-movie-modal-open="#test-modal" data-movie-id="${movie.imdbID}" class="btn cinema__btn"><img class="cinema__btn-img" src="./img/more.svg" alt="more"></button>
     </div>
         </div>`;
 
-    // elList.append(createMovie(movie));
+    elList.append(fillModal(movie));
   });
 
   elList.innerHTML = html;
@@ -45,41 +45,45 @@ document.addEventListener("click", (evt) => {
 });
 
 function onOpenModal(evt) {
-  const el = evt.target.closest("[data-movie-modal]");
+  const el = evt.target.closest("[data-movie-modal-open]");
 
   if (!el) return;
 
-  const modalSet = el.dataset.modalOpen;
+  const modalSel = el.dataset.movieModalOpen;
+  const movieId = el.dataset.movieId
 
-  document.querySelector(modalSet).classList.remove("visually-hidden");
+  fillModal(movieId)
+  document.querySelector(modalSel).classList.add("show");
 }
 
 function onCloseOutsideClick(evt) {
-  const el = evt.target;
+  const el = evt.target
 
-  if (!el.matches("[data-modal]")) return;
+  if (!el.matches("[data-movie-modal]")) return;
 
-  el.classList.add("visually-hidden");
+  el.classList.remove("show");
 }
 
 function onModalCloseClick(evt) {
-  const el = evt.target.closest("[data-modal-close]");
+  const el = evt.target.closest("[data-movie-modal-close]");
 
   if (!el) return;
 
   el.parentElement.parentElement.classList.remove("show");
 }
 
-// function createMovie(movie) {
-//  elModalContent.querySelector("[data-title]").textContent = movie.Title;
-//  elModalContent.querySelector("[data-year]").textContent = movie.Year;
-//  elModalContent.querySelector("[data-rated]").textContent = movie.Rated;
-//  elModalContent.querySelector("[data-released]").textContent = movie.Released;
-//  elModalContent.querySelector("[data-runtime]").textContent = movie.Runtime;
-//  elModalContent.querySelector("[data-genre]").textContent = movie.Genre;
-//  elModalContent.querySelector("[data-director]").textContent = movie.Director;
-//  elModalContent.querySelector("[data-metascore]").textContent = movie.Metascore;
-//  elModalContent.querySelector("[data-imdbrating]").textContent = movie.imdbrating;
-//  elModalContent.querySelector("[data-type]").textContent = movie.Type;
-//  elModalContent.querySelector("[data-id]").textContent = movie.imdbID;
-// }
+async function fillModal(movieId) {
+  const movie = await getMovie(movieId);
+
+ elModalContent.querySelector("[data-title]").textContent = movie.Title;
+ elModalContent.querySelector("[data-year]").textContent = movie.Year;
+ elModalContent.querySelector("[data-rated]").textContent = movie.Rated;
+ elModalContent.querySelector("[data-released]").textContent = movie.Released;
+ elModalContent.querySelector("[data-runtime]").textContent = movie.Runtime;
+ elModalContent.querySelector("[data-genre]").textContent = movie.Genre;
+ elModalContent.querySelector("[data-director]").textContent = movie.Director;
+ elModalContent.querySelector("[data-metascore]").textContent = movie.Metascore;
+ elModalContent.querySelector("[data-imdbrating]").textContent = movie.imdbrating;
+ elModalContent.querySelector("[data-type]").textContent = movie.Type;
+ elModalContent.querySelector("[data-id]").textContent = movie.imdbID;
+}
