@@ -1,0 +1,66 @@
+* {
+   box-sizing: border-box;
+}
+body {
+   background-color: gray;
+   font-family: 'Unbounded', cursive;
+}
+
+.search {
+   border: 0;
+   width: 500px;
+   height: 38px;
+}
+.main__cinema {
+   gap: 30px;
+}
+.cinema {
+   width: 300px;
+   height: 440px;
+}
+
+.cinema__img {
+   z-index: -1;
+   width: 300px;
+   position: absolute;
+}
+
+h2 {
+   color: rgba(255, 0, 0, 0.534);
+   font-size: 13px;
+   margin: 0;
+   padding: 0;
+}
+
+.cinema__btn {
+   display: flex;
+   justify-content: center;
+   width: 42px;
+   height: 42px;
+   background-color: rgba(255, 255, 255, 0.24);
+   border: solid 0.5px transparent;
+   border-radius: 50%;
+}
+.cinema__btn-img {
+   width: 28px;
+   height: 28px;
+}
+
+.visually-hidden {
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+	clip: rect(1px, 1px, 1px, 1px);
+	padding:0 !important;
+	border:0 !important;
+	height: 1px !important; 
+	width: 1px !important; 
+	overflow: hidden;
+}
+
+.test-modal {
+   width: 100px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background: #000;
+}

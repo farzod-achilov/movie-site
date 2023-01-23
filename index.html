@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/bootstrap.css" />
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <h1 class="text-center my-4">KinoAfisha</h1>
+    <form
+      class="d-flex align-items-center justify-content-center"
+      data-movie-form
+    >
+      <div
+        class="d-flex align-items-center justify-content-center input-group mb-3"
+      >
+        <span class="input-group-text" id="inputGroup-sizing-default"
+          >Search</span
+        >
+        <input
+          type="text"
+          class="form-contro search"
+          name="name"
+          aria-label="Sizing example input"
+          aria-describedby="inputGroup-sizing-default"
+        />
+        <button class="btn" type="submit">
+          <img src="./img/search_FILL0_wght400_GRAD0_opsz48.svg" alt="search" />
+        </button>
+      </div>
+    </form>
+
+    <ul
+      data-movie-list
+      class="main__cinema d-flex justify-content-center align-items-center flex-wrap g-3"
+    >
+      <div></div>
+    </ul>
+    <div data-movie-modal="" class="test-modal visually-hidden">
+      <div data-movie-content></div>
+      <h1 data-title></h1>
+      <h4 data-year></h4>
+      <h4 data-rated></h4>
+      <h4 data-released></h4>
+      <h4 data-runtime></h4>
+      <h4 data-genre></h4>
+      <h4 data-director></h4>
+      <h4 data-metascore></h4>
+      <h4 data-imdbrating></h4>
+      <h4 data-type></h4>
+      <h4 data-id></h4>
+    </div>
+    <script src="./js/main.js"></script>
+  </body>
+</html>
