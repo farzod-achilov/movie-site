@@ -42,26 +42,38 @@
     <ul
       data-movie-list
       class="main__cinema d-flex justify-content-center align-items-center flex-wrap g-3"
+    ></ul>
+
+    <nav
+      aria-label="Movie pagination"
+      class="d-flex justify-content-center my-3"
     >
-      <div></div>
-    </ul>
+      <ul data-modal-pagination class="pagination"></ul>
+    </nav>
     <div data-movie-modal class="my-modal" id="test-modal">
-     
       <div class="my-modal-content" data-movie-content>
         <button class="btn btn-close" data-movie-modal-close></button>
-        <h1 data-title></h1>
-        <h4 data-year></h4>
-        <h4 data-rated></h4>
-        <h4 data-released></h4>
-        <h4 data-runtime></h4>
-        <h4 data-genre></h4>
-        <h4 data-director></h4
-        <h4 data-metascore></h4>
-        <h4 data-imdbrating></h4>
-        <h4 data-type></h4>
-        <h4 data-id></h4>
+        <div
+          class="spinner-border text-secondary d-none my-modal-spinner"
+          data-modal-spinner
+          role="status"
+        >
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div data-movie-about>
+          <h1 data-title></h1>
+          <h4 data-year></h4>
+          <h4 data-rated></h4>
+          <h4 data-released></h4>
+          <h4 data-runtime></h4>
+          <h4 data-genre></h4>
+          <h4 data-director></h4>
+          <h4 data-metascore></h4>
+          <h4 data-imdbrating></h4>
+          <h4 data-type></h4>
+          <h4 data-id></h4>
+        </div>
       </div>
-     
     </div>
     <script src="./js/main.js"></script>
   </body>
