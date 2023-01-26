@@ -16,12 +16,12 @@ elForm.addEventListener("submit", (evt) => {
   searchMovies(name);
 });
 
-async function searchMovies(quary) {
-  const res = await fetch(`${API_URL}&s=${quary}`);
+async function searchMovies(quary, page = 1) {
+  const res = await fetch(`${API_URL}&s=${quary}&page=${page}`);
   const searchResult = await res.json();
 
   renderMovies(searchResult.Search);
-  renderPaginetion(Math.ceil(+searchResult.totalResults / 10));
+  renderPaginetion(Math.ceil(+searchResult.totalResults / 10), quary);
 }
 
 async function getMovie(movieId) {
@@ -45,12 +45,12 @@ function renderMovies(movies) {
   elList.innerHTML = html;
 }
 
-function renderPaginetion(totalPages) {
+function renderPaginetion(totalPages, quary) {
   elPagination.innerHTML = "";
   let html = "";
 
   for (let i = 1; i <= totalPages; i++) {
-    html += `<li class="page-item"><a class="page-link" data-movie-pages=${i} href="?page=${i}">${i}</a></li>`;
+    html += `<li class="page-item"><a class="page-link" data-movie-pages=${i} data-movie-quary="${quary}" href="?page=${i}">${i}</a></li>`;
   }
 
   elPagination.innerHTML = html;
@@ -98,7 +98,10 @@ function onPageClick(evt) {
   const el = evt.target.closest("[data-movie-page]");
 
   if (!el) return;
+
   evt.preventDefault();
+
+  searchMovies(el.dataset.movieQuery, el.dataset.moviePage);
 }
 
 async function fillModal(movieId, elModalSpinner) {
