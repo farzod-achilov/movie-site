@@ -1,6 +1,6 @@
 const API_KEY = "3194e30b";
-const API_URL = `http://www.omdbapi.com/?apikey=${API_KEY}`;
-const IMG_URL = `http://img.omdbapi.com/?apikey=${API_KEY}`;
+const API_URL = `https://www.omdbapi.com/?apikey=${API_KEY}`;
+const IMG_URL = `https://img.omdbapi.com/?apikey=${API_KEY}`;
 
 const elForm = document.querySelector("[data-movie-form]");
 const elList = document.querySelector("[data-movie-list]");
