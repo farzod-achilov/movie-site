@@ -4,29 +4,67 @@ const IMG_URL = `http://img.omdbapi.com/?apikey=${API_KEY}`;
 
 const elForm = document.querySelector("[data-movie-form]");
 const elList = document.querySelector("[data-movie-list]");
+const elNameInput = document.querySelector("[data-input-name]");
 const elPagination = document.querySelector("[data-modal-pagination]");
 const elModal = document.querySelector("[data-movie-modal-open]");
-const elModalContent = document.querySelector("[data-movie-content]");
+const elModalContent = document.querySelector("[data-movie-about]");
+const formData = new FormData(elForm);
 
-elForm.addEventListener("submit", (evt) => {
+elNameInput.addEventListener(
+  "keyup",
+  debounce((evt) => onInputKeyUp(evt), 300)
+);
+
+elForm.addEventListener("change", (evt) => {
   evt.preventDefault();
 
-  const formdata = new FormData(elForm);
-  const name = formdata.get("name");
-  searchMovies(name);
+  if (elNameInput.value.length < 3) return;
+
+  searchMovies();
 });
 
-async function searchMovies(quary, page = 1) {
-  const res = await fetch(`${API_URL}&s=${quary}&page=${page}`);
-  const searchResult = await res.json();
+document.addEventListener("click", (evt) => {
+  onOpenModal(evt);
+  onCloseOutsideClick(evt);
+  onModalCloseClick(evt);
+  onPageClick(evt);
+});
+
+function debounce(func, timeout = 300) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, timeout);
+  };
+}
+function onInputKeyUp(evt) {
+  if (elNameInput.value.length < 3) return;
+
+  searchMovies();
+}
+
+async function searchMovies(page = 1) {
+  const { s, y, type } = getFormData();
+
+  elList.innerHTML = `<img src="./img/Bean Eater-1s-200px.svg" alt="Loading"/>`;
+
+  let res = await fetch(`${API_URL}&s=${s}&page=${page}&y=${y}&type=${type}`);
+  let searchResult = await res.json();
+
+  if (searchResult.Error) {
+    console.log(searchResult.Error);
+    return;
+  }
 
   renderMovies(searchResult.Search);
-  renderPaginetion(Math.ceil(+searchResult.totalResults / 10), quary);
+
+  renderPagination(Math.ceil(+searchResult.totalResults / 10), page);
 }
 
 async function getMovie(movieId) {
-  const res = await fetch(`${API_URL}&i=${movieId}`);
-
+  let res = await fetch(`${API_URL}&i=${movieId}`);
   return await res.json();
 }
 
@@ -36,8 +74,8 @@ function renderMovies(movies) {
   movies.forEach((movie) => {
     html += `<div class="cinema"><img class="cinema__img"   height= "440px" width="50" src="${movie.Poster}" alt="${movie.Title}"/>
     <div class="d-flex align-items-center justify-content-between">
-    <h2>${movie.Title}-${movie.Year} </h2>
-    <button type="button" data-movie-modal-open="#test-modal" data-movie-id="${movie.imdbID}" class="btn cinema__btn"><img class="cinema__btn-img" src="./img/more.svg" alt="more"></button>
+    <button type="button" data-movie-modal-open="#test-modal" data-movie-id="${movie.imdbID}" class="btn cinema__btn"><img class="cinema__btn-img" src="./img/more.svg" alt="more">
+    </button>
     </div>
         </div>`;
   });
@@ -45,37 +83,60 @@ function renderMovies(movies) {
   elList.innerHTML = html;
 }
 
-function renderPaginetion(totalPages, quary) {
+function renderPagination(totalPages, page) {
   elPagination.innerHTML = "";
   let html = "";
 
+  html += ` <li class="page-item${+page === 1 ? " disabled" : ""} ">
+  <a class="page-link" data-movie-page=${+page - 1} href="?page=${
+    +page - 1
+  }" tabindex="-1" aria-disabled="true">Previous</a>
+</li>`;
+
   for (let i = 1; i <= totalPages; i++) {
-    html += `<li class="page-item"><a class="page-link" data-movie-pages=${i} data-movie-quary="${quary}" href="?page=${i}">${i}</a></li>`;
+    html += `<li class="page-item${
+      +page === i ? " active" : ""
+    } "><a class="page-link" data-movie-page=${i} href="?page=${i}">${i}</a></li>`;
   }
+
+  html += ` <li class="page-item${+page === totalPages ? " disabled" : ""}">
+  <a class="page-link" data-movie-page=${+page + 1} href="?page=${
+    +page + 1
+  }"  tabindex="-1" aria-disabled="true">Next</a>
+</li>`;
 
   elPagination.innerHTML = html;
 }
-document.addEventListener("click", (evt) => {
-  onOpenModal(evt);
-  onCloseOutsideClick(evt);
-  onModalCloseClick(evt);
-  onPageClick(evt);
-});
 
-function onOpenModal(evt) {
+function getFormData() {
+  const formData = new FormData(elForm);
+
+  return {
+    s: formData.get("input-name"),
+    y: formData.get("input-year"),
+    type: formData.get("select-type"),
+  };
+}
+
+function onModalCloseClick(evt) {
+  let el = evt.target.closest("[data-movie-modal-close]");
+
+  if (!el) return;
+
+  el.parentElement.parentElement.classList.remove("show");
+}
+
+async function onOpenModal(evt) {
   const el = evt.target.closest("[data-movie-modal-open]");
 
   if (!el) return;
 
-  const modalSel = el.dataset.movieModalOpen;
-  const movieId = el.dataset.movieId;
-  const elModal = document.querySelector(modalSel);
+  let movieId = el.dataset.movieId;
 
-  const elModalSpinner = elModal.querySelector("[data-modal-spinner]");
+  await fillModal(movieId);
 
-  fillModal(movieId, elModalSpinner);
-
-  elModal.classList.add("show");
+  let modalSelector = el.dataset.movieModalOpen;
+  document.querySelector(modalSelector).classList.add("show");
 }
 
 function onCloseOutsideClick(evt) {
@@ -86,41 +147,38 @@ function onCloseOutsideClick(evt) {
   el.classList.remove("show");
 }
 
-function onModalCloseClick(evt) {
-  const el = evt.target.closest("[data-movie-modal-close]");
-
-  if (!el) return;
-
-  el.parentElement.parentElement.classList.remove("show");
-}
-
 function onPageClick(evt) {
-  const el = evt.target.closest("[data-movie-page]");
+  const el = evt.target.closest("[data-movie-modal-close]");
 
   if (!el) return;
 
   evt.preventDefault();
 
-  searchMovies(el.dataset.movieQuery, el.dataset.moviePage);
+  searchMovies(el.dataset.movieModalClose);
 }
 
-async function fillModal(movieId, elModalSpinner) {
-  elModalSpinner.classList.remove("d-none");
+async function fillModal(movieId) {
   const movie = await getMovie(movieId);
+  let html = "";
 
-  elModalContent.querySelector("[data-title]").textContent = movie.Title;
-  elModalContent.querySelector("[data-year]").textContent = movie.Year;
-  elModalContent.querySelector("[data-rated]").textContent = movie.Rated;
-  elModalContent.querySelector("[data-released]").textContent = movie.Released;
-  elModalContent.querySelector("[data-runtime]").textContent = movie.Runtime;
-  elModalContent.querySelector("[data-genre]").textContent = movie.Genre;
-  elModalContent.querySelector("[data-director]").textContent = movie.Director;
-  elModalContent.querySelector("[data-imdbrating]").textContent =
-    movie.imdbrating;
-  elModalContent.querySelector("[data-type]").textContent = movie.Type;
-  elModalContent.querySelector("[data-id]").textContent = movie.imdbID;
-
-  elModalSpinner.classList.add("d-none");
+  html += `
+  <div class="movie__modal">
+  <div class="movie__modal-img">
+    <img src="${movie.Poster}" alt="${movie.Title}" />
+  </div>
+  <div>
+    <h2 class="movie__modal-name">${movie.Title}</h2>
+    <p>Actors: ${movie.Actors}</p>
+    <p>Country: ${movie.Country}</p>
+    <p>Awards: ${movie.Awards}</p>
+    <p>Language: ${movie.Language}</p>
+    <p>Language: ${movie.Language}</p>
+    <p>Language: ${movie.Released}</p>
+    <p>Genre: ${movie.Genre}</p>
+    <p>Director: ${movie.Director}</p
+  </div>
+</div>
+`;
+  console.log(movie);
+  elModalContent.innerHTML = html;
 }
-
-// 40:00

@@ -25,13 +25,6 @@ body {
   position: absolute;
 }
 
-h2 {
-  color: rgba(255, 0, 0, 0.534);
-  font-size: 13px;
-  margin: 0;
-  padding: 0;
-}
-
 .cinema__btn {
   display: flex;
   justify-content: center;
@@ -61,7 +54,7 @@ h2 {
 }
 
 .my-modal-content {
-  max-width: 600px;
+  width: 700px;
   padding: 30px;
   background-color: #fff;
   border-radius: 10px;
@@ -77,4 +70,94 @@ h2 {
 
 img {
   object-fit: cover;
+}
+
+.my-modal-marvel {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+  z-index: 222;
+  display: none;
+}
+
+.my-marvel-content {
+  width: 700px;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.show {
+  display: flex;
+}
+
+.marvel__modal-img {
+  width: 200px;
+  height: 345px;
+  object-fit: cover;
+}
+
+.marvel__modal-content {
+  max-width: 230px;
+  margin: 0;
+}
+.marvel__modal-name {
+  margin: 0;
+  padding: 0;
+}
+
+.marvel__modal-description {
+  margin: 0;
+  padding: 0;
+}
+
+.marvel button {
+  border: 0;
+  padding: 0;
+}
+
+.marvel img,
+.marvel button {
+  width: 1000px;
+  height: 100%;
+  object-fit: cover;
+}
+
+.marvel {
+  margin-bottom: 30px;
+}
+
+button {
+  display: inline-block;
+}
+
+.movie__modal-img img {
+  width: 200px;
+  height: 345px;
+  object-fit: cover;
+}
+
+.movie__modal {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.movie__modal-name {
+  color: black;
+  margin: 0;
+  padding: 0;
+}
+
+.input-year {
+  max-width: 300px;
+}
+
+.input-name {
+  max-width: 300px;
+}
+
+.input-select {
+  height: 40px;
 }

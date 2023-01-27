@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Movies</title>
     <link rel="stylesheet" href="./css/bootstrap.css" />
     <link rel="stylesheet" href="./css/main.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -13,9 +13,13 @@
       href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css"
+    />
   </head>
   <body>
-    <h1 class="text-center my-4">KinoAfisha</h1>
+    <h1 class="text-center my-4">Kino Afisha</h1>
     <form
       class="d-flex align-items-center justify-content-center"
       data-movie-form
@@ -28,11 +32,32 @@
         >
         <input
           type="text"
-          class="form-contro search"
-          name="name"
+          required
+          data-input-name
+          class="form-contro search input-name"
+          name="input-name"
           aria-label="Sizing example input"
           aria-describedby="inputGroup-sizing-default"
         />
+        <input
+          min="1950"
+          max="2023"
+          class="input-year form-control"
+          aria-label="default input example"
+          type="number"
+          name="input-year"
+          placeholder="Year"
+        />
+        <select
+          name="select-type"
+          class="form-select-sm select form-select-lg input-select"
+          aria-label=".form-select-lg example"
+        >
+          <option selected value="">Movie type</option>
+          <option value="movie">movie</option>
+          <option value="series">series</option>
+          <option value="episode">episode</option>
+        </select>
         <button class="btn" type="submit">
           <img src="./img/search_FILL0_wght400_GRAD0_opsz48.svg" alt="search" />
         </button>
@@ -50,32 +75,21 @@
     >
       <ul data-modal-pagination class="pagination"></ul>
     </nav>
+    <div data-marvel-list class="d-flex justify-content-center flex-wrap"></div>
     <div data-movie-modal class="my-modal" id="test-modal">
       <div class="my-modal-content" data-movie-content>
         <button class="btn btn-close" data-movie-modal-close></button>
-        <div
-          class="spinner-border text-secondary d-none my-modal-spinner"
-          data-modal-spinner
-          role="status"
-        >
-          <span class="visually-hidden">Loading...</span>
-        </div>
-        <div data-movie-about>
-          <h1 data-title></h1>
-          <h4 data-year></h4>
-          <h4 data-rated></h4>
-          <h4 data-released></h4>
-          <h4 data-runtime></h4>
-          <h4 data-genre></h4>
-          <h4 data-director></h4>
-          <h4 data-metascore></h4>
-          <h4 data-imdbrating></h4>
-          <h4 data-type></h4>
-          <h4 data-id></h4>
-        </div>
+        <div data-movie-about></div>
       </div>
     </div>
+    <div data-marvel-modal class="my-modal-marvel" id="test-marvel">
+      <div class="my-marvel-content" data-marvel-content>
+        <button class="btn btn-close" data-marvel-modal-close></button>
+        <div data-marvel-about></div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js"></script>
     <script src="./js/main.js"></script>
-    <!-- <script src="./js/marvel.js"></script> -->
+    <script src="./js/marvel.js"></script>
   </body>
 </html>
